@@ -2,7 +2,7 @@
 
 #TODO Metodo de parsing
 
-import os, NFC, menu2, thread, buttons, sys, curses, npyscreen
+import os, NFC, menu, thread, buttons, sys, curses, npyscreen
 
 # Control de errores en los argumentos
 if len(sys.argv) <= 1:
