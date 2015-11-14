@@ -21,5 +21,5 @@ class NFC():
 		str = str(clf.sense(target1, iterations=20, interval=0.4))
 		str2 = str[13:21]                                                         
 		response = urllib2.urlopen(web+str2)
-	      	clf.close()
+	    clf.close()
 		return response

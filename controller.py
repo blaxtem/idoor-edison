@@ -2,15 +2,13 @@
 
 #TODO Metodo de parsing
 
-import os, NFC, menu, thread, buttons, sys, curses, npyscreen
+import os, NFC, menu, thread, buttons, sys, curses, npyscreen, parser
 
 # Control de errores en los argumentos
 if len(sys.argv) <= 1:
 	print "Usage: python controller.py <delay_of_button_read> <web>"
 
 class Controller:
-	def parsing(self,response):
-		return None
 	def run(self):
 		os.system('cls' if os.name == 'nt' else 'clear')
 		print "Acerque la targeta de la universidad al lector de la derecha."
@@ -20,7 +18,7 @@ class Controller:
 			response = nfc.read(sys.argv[2])
 			if response != None: 
 				break;
-		self.datos = parsing(response)
+		parser(response)
 		# Inicializacion del entorno grafico 
 		menu = menu2()
 	
