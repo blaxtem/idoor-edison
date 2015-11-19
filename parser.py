@@ -33,15 +33,14 @@ class parser:
 	def numAssignment(self):
 		return len(self.assignments)
 	def gridScheduleCreation(self,gd):
-			gd.values = []
+		gd.values = []
         	horas = ['8','9','10','11','12','13','14','15','16','17','18','19','20']
         	dias = ["Lunes","Martes","Miercoles","Jueves","Viernes"]
-			aux = []
+		aux = []
 	        hcount = 0
-        
-			for w in range(len(horas)):
-				m = re.search(horas[w], self.horario)
-				if m != None:
+		for w in range(len(horas)):
+			m = re.search(horas[w], self.horario)
+			if m != None:
 	     			hcount += 1
                  
         	aux = self.horario.split('},"',hcount)
@@ -49,7 +48,7 @@ class parser:
         	for q in range(len(aux)):
             		aux[q] = re.split(",",aux[q])
             		m = re.match(r"(.*?)\":\{(\"(.*?)\":\"(.*?)\")",aux[q][0])
-	        		aux[q][0] = m.group(2)
+	        	aux[q][0] = m.group(2)
        	    		aux[q].append(m.group(1))
         	for x in horas:
             		for y in range(len(aux)):
@@ -60,15 +59,15 @@ class parser:
                     			for z in dias:
                         			for d in range(len(aux[y])-1):
                             				dayPattern = re.compile(r"\"(.*?)\":\"(.*?)\"")
-											t = dayPattern.match(aux[y][d])
-											if t.group(1) == z:
-												if self.day == z and self.nextHour == x: 
-													self.nextclass = t.group(2)
-														row.append(t.group(2))
-														break
+							t = dayPattern.match(aux[y][d])
+							if t.group(1) == z:
+								if self.day == z and self.nextHour == x: 
+									self.nextclass = t.group(2)
+									row.append(t.group(2))
+									break
 								if d == len(aux[y])-2:
 									row.append("---")  
-                    				gd.values.append(row)
+                    			gd.values.append(row)
 		if self.nextclass == None: 
 			self.nextclass = "Proximo dia"
             
@@ -84,7 +83,7 @@ class parser:
 		self.notas = self.datos[z.start()+6:len(self.datos)-1]
 		#Creacion del array de tareas
 		pattern = re.compile(r"\"siglas_asignatura\":\"(.*?)\",\"tarea\":\"(.*?)\",\"entrega\":\"(.*?)\"")
-        self.assignments = pattern.findall(self.tareas)
+        	self.assignments = pattern.findall(self.tareas)
 		#Creacion del array de notas
 		pattern = re.compile(r"(.*?):(.*?):(.*?)/")
-        self.grades = pattern.findall(self.notas)
+        	self.grades = pattern.findall(self.notas)
