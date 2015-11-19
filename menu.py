@@ -1,27 +1,33 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-#TODO Obtencion de datos desde la clase que llama a esta (self.parent.datos  ???)
+#TODO 
 #     Pagina de avisos (4)
-#     Pagina acceso rapido ( siguiente classe, ultima nota y ultima tarea)
+#     Pagina acceso rapido ( siguiente classe)
 #     Horari de 8 a 20
 #     Crear pagina y botones para cada asignatura 
 #     Colores?	
 #     Uso: Con las teclas tab, down arrow y enter
 
-import npyscreen, random, parser
+import npyscreen, random
 #npyscreen.disableColor()
 class TestApp(npyscreen.NPSApp):
+    def __init__(self, parser, controller):
+	    self.parser = parser
+	    parser.groupCreation();
+	    self.controller = controller
     def h_exit_escape(self):
-	   F.on_ok	
+	    F.on_ok	
     def main(self):
-        # Creacion del Form y de los botones de la 1a pagina
+	# Creacion del Form y de los botones de la 1a pagina
         F = npyscreen.FormMultiPageActionWithMenus(name = "IDOOR",lines=30,columns=40,pages_label_color='LABEL')
-        #F.how_exited_handers[npyscreen.widget.EXITED_ESCAPE]  = self.exit_application
-        F.add(FixedText, name = "Siguiente Clase: ", value = parser.nextClass())
-        F.add(FixedText, name = "Ultima nota: ", value = parser.lastGrade())
-        F.add(FixedText, name = "Ultima tare: ", value = parser.lastAssignment)
-        new_page = F.add_page()
+        parser = self.parser
+	#F.how_exited_handers[npyscreen.widget.EXITED_ESCAPE]  = self.exit_application
+        F.add(npyscreen.FixedText, name = "Siguiente Clase: ", value = "Siguiente Clase: " + parser.nextClass())
+        F.add(npyscreen.FixedText, name = "Ultima nota: ", value = "Ultima nota: " + parser.lastGrade())
+        F.add(npyscreen.FixedText, name = "Ultima tarea: ", value = "Ultima tarea: " + parser.lastAssignment())
+        F.add(CSButton, name = "Cerrar session")
+	    new_page = F.add_page()
 	    fn = F.add(NotasButton, name = "Notas")
 	    av = F.add(AvisosButton, name = "Avisos")
         dt = F.add(HorarioButton, name = "Horario")
@@ -30,28 +36,30 @@ class TestApp(npyscreen.NPSApp):
         new_page_2 = F.add_page()
         t = F.add(CustomTitleText, name = "Notes:",)
         # TODO Cambiar formato del display de las notas a grid
-        ms= F.add(CustomTitleSelectOne, max_height=4, value = [1,], name="RP",
-                values = ["Control 1:","Control 2:","Control 3:"], scroll_exit=True)
-        ms= F.add(CustomTitleSelectOne, max_height=4, value = [1,], name="PBE",
-                values = ["Option1","Option2","Option3"], scroll_exit=True)
+        for x in range(parser.numGrades()):
+                F.add_widget_intelligent(npyscreen.FixedText, value = parser.grades[x][0] + ' ' + parser.grades[x][1] + ' ' + parser.grades[x][2] )
         F.add(BackButton, name = "Volver al menu principal")
         # Creacion pagina 4
     	new_page_3 = F.add_page()
-    	parser.gridCreation(F.add(MyGrid, columns = 6, scroll_exit=True, exit_left = True,col_titles=['','Lunes','Martes','Miercoles','Jueves','Viernes']))
-        F.add(BackButton, name = "Volver al menu principal")
+    	parser.gridScheduleCreation(F.add(MyGrid, columns = 6, scroll_exit=True, exit_left = True,col_titles=['','Lunes','Martes','Miercoles','Jueves','Viernes']))
+        #F.add(BackButton, name = "Volver al menu principal")
 	    # Creacion pagina 5
 	    new_page_4 = F.add_page()
+	    for x in range(parser.numAssignment()):
+		      F.add_widget_intelligent(npyscreen.FixedText, value = parser.assignments[x][0]+':'+ parser.assignments[x][1] +' para ' + parser.assignments[x][2])
         F.add(BackButton, name = "Volver al menu principal")
         # Metodo que se llama al seleccionar OK
         def on_ok():
-            npyscreen.notify_confirm("OK Button Pressed!")
-	        self.parent.stop()
+            	npyscreen.notify_confirm("OK Button Pressed!")
+	            self.controller.stop()
         F.on_ok = on_ok
 	    def on_cancel():
-	       F.switch_page(0)
+		  F.switch_page(0)
 	    F.on_cancel = on_cancel
         F.edit()
- 
+class CustomFixedText(npyscreen.TitleSelectOne):
+    how_exited = True
+
 class CustomTitleSelectOne(npyscreen.TitleSelectOne):
     how_exited = True
 
@@ -77,7 +85,7 @@ class BackButton(npyscreen.ButtonPress):
         
 class AvisosButton(npyscreen.ButtonPress):
 	def whenPressed(self):
-		self.parent.switch_page(3)
+		self.parent.switch_page(4)
 
 class CSButton(npyscreen.ButtonPress):
 	def whenPressed(self):
@@ -85,11 +93,11 @@ class CSButton(npyscreen.ButtonPress):
 		
 class NotasButton(npyscreen.ButtonPress):
 	def whenPressed(self):
-		self.parent.switch_page(1)
+		self.parent.switch_page(2)
 
 class HorarioButton(npyscreen.ButtonPress):
 	def whenPressed(self):
-		self.parent.switch_page(2)
+		self.parent.switch_page(3)
 
 	
 if __name__ == "__main__":

@@ -1,35 +1,35 @@
 #!/usr/bin/env python
 
 #TODO Metodo de parsing
-
-import os, NFC, menu, thread, buttons, sys, curses, npyscreen, parser
-
-# Control de errores en los argumentos
-if len(sys.argv) <= 1:
-	print "Usage: python controller.py <delay_of_button_read> <web>"
+from parser import parser
+from menu import TestApp 
+import urllib2, NFC, menu, thread, buttons, sys, os, curses, npyscreen, sys
 
 class Controller:
+	def __init__(self):
+		self.datos = None
 	def run(self):
-		os.system('cls' if os.name == 'nt' else 'clear')
-		print "Acerque la targeta de la universidad al lector de la derecha."
+		os.system('clear')
+		print "Acerque la targeta de la universidad al lector."
 		nfc = NFC.NFC()
 		# Bucle hasta la lectura de una targeta
 		while True:
-			response = nfc.read(sys.argv[2])
+			#response = urllib2.urlopen('http://raiblax.com/pbe/receptor.php?id_alumno=FB68CCF1')
+			response = nfc.read('http://raiblax.com/pbe/receptor.php?id_alumno=')
 			if response != None: 
 				break;
-		parser(response)
-		# Inicializacion del entorno grafico 
-		menu = menu2()
+		# Creacion del entorno grafico 
+		Menu = TestApp(parser(response),self)
+		Menu.run()
 	
 	# Vuelta al estado inicial
 	def stop(self):
-		run()
+		self.run()
 if __name__ == "__main__":
     ctrl = Controller()
     try:
-	# Creacion del thread encargado de leer los pins de los botones
-    	bd = thread.start_new_thread( buttons_daemon, ("Buttons", sys.argv[1]) )
+    	# Creacion del thread encargado de leer los pins de los botones
+    	bd = thread.start_new_thread( buttons_daemon, ("Buttons", 100)
     except:
     	print "Error: unable to start the button daemon"
     ctrl.run()
