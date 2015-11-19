@@ -1,6 +1,6 @@
 import script, urllib2, re
 
-response = urllib2.urlopen('http://raiblax.com/pbe/receptor.php?id_alumno=gonzalo.polo') #ID diferente
+response = urllib2.urlopen('http://raiblax.com/pbe/receptor.php?id_alumno=FB68CCF1')
 datos = response.read()
 tareas = re.compile("tareas")
 horario = re.compile("horario")
