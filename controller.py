@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ctrl = Controller()
     try:
     	# Creacion del thread encargado de leer los pins de los botones
-    	bd = thread.start_new_thread( buttons_daemon, ("Buttons", 100)
+    	bd = thread.start_new_thread( buttons_daemon, ("Buttons", 100))
     except:
     	print "Error: unable to start the button daemon"
     ctrl.run()
