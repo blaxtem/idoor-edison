@@ -27,11 +27,11 @@ class TestApp(npyscreen.NPSApp):
         F.add(npyscreen.FixedText, name = "Ultima nota: ", value = "Ultima nota: " + parser.lastGrade())
         F.add(npyscreen.FixedText, name = "Ultima tarea: ", value = "Ultima tarea: " + parser.lastAssignment())
         F.add(CSButton, name = "Cerrar session")
-	    new_page = F.add_page()
-	    fn = F.add(NotasButton, name = "Notas")
-	    av = F.add(AvisosButton, name = "Avisos")
+	new_page = F.add_page()
+	fn = F.add(NotasButton, name = "Notas")
+	av = F.add(AvisosButton, name = "Avisos")
         dt = F.add(HorarioButton, name = "Horario")
-	    lo = F.add(CSButton, name = "Cerrar session")        
+	lo = F.add(CSButton, name = "Cerrar session")        
         # Creacion pagina 3
         new_page_2 = F.add_page()
         t = F.add(CustomTitleText, name = "Notes:",)
@@ -43,19 +43,19 @@ class TestApp(npyscreen.NPSApp):
     	new_page_3 = F.add_page()
     	parser.gridScheduleCreation(F.add(MyGrid, columns = 6, scroll_exit=True, exit_left = True,col_titles=['','Lunes','Martes','Miercoles','Jueves','Viernes']))
         #F.add(BackButton, name = "Volver al menu principal")
-	    # Creacion pagina 5
-	    new_page_4 = F.add_page()
-	    for x in range(parser.numAssignment()):
-		      F.add_widget_intelligent(npyscreen.FixedText, value = parser.assignments[x][0]+':'+ parser.assignments[x][1] +' para ' + parser.assignments[x][2])
+	# Creacion pagina 5
+	new_page_4 = F.add_page()
+	for x in range(parser.numAssignment()):
+		F.add_widget_intelligent(npyscreen.FixedText, value = parser.assignments[x][0]+':'+ parser.assignments[x][1] +' para ' + parser.assignments[x][2])
         F.add(BackButton, name = "Volver al menu principal")
         # Metodo que se llama al seleccionar OK
         def on_ok():
             	npyscreen.notify_confirm("OK Button Pressed!")
-	            self.controller.stop()
+	        self.controller.stop()
         F.on_ok = on_ok
-	    def on_cancel():
-		  F.switch_page(0)
-	    F.on_cancel = on_cancel
+	def on_cancel():
+		F.switch_page(0)
+	F.on_cancel = on_cancel
         F.edit()
 class CustomFixedText(npyscreen.TitleSelectOne):
     how_exited = True
